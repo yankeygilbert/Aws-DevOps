@@ -1,0 +1,130 @@
+Description: "IaC for Tier3Topology Architecture"
+Resources:
+  vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: "192.168.0.0/16"
+      EnableDnsHostnames: True
+      EnableDnsSupport: True
+      Tags:
+        -
+          Key: "VpcName"
+          Value: "T3TVpc"
+
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select
+        - 0
+        - Fn::GetAZs: !Ref "AWS::REGION"
+      CidrBlock: "192.168.1.0/24"
+      MapPublicIpOnLaunch: True
+      VpcId: !Ref vpc
+
+  PrivateSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select
+        - 0
+        - Fn::GetAZs: !Ref "AWS::REGION"
+      CidrBlock: "192.168.0.1/28"
+      MapPublicIpOnLaunch: True
+      VpcId: !Ref vpc
+
+  PrivateSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select
+        - 0
+        - Fn::GetAZs: !Ref "AWS::REGION"
+      CidrBlock: "192.168.0.2/28"
+      MapPublicIpOnLaunch: True
+      VpcId: !Ref vpc
+
+  PrivateSubnet3:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select
+        - 1
+        - Fn::GetAZs: !Ref "AWS::REGION"
+      CidrBlock: "192.168.0.3/28"
+      MapPublicIpOnLaunch: True
+      VpcId: !Ref vpc
+
+  SecurityGroupPublic:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Secuity Group for PublicSubnet servers"
+      GroupName: PsubnetSg
+      SecurityGroupIngress: 
+        - 
+          CidrIp: "0.0.0.0/0"
+          FromPort: 433
+          IpProtocol: "HTTPS"
+          ToPort: 80
+      VpcId: !Ref vpc
+
+  
+  SecurityGroupPrivate:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Secuity Group for PrivateSubnet1 servers"
+      GroupName: PvsubnetSg1
+      SecurityGroupIngress: 
+        - 
+          CidrIp: "0.0.0.0/0"
+          FromPort: 22
+          IpProtocol: "SSH"
+          ToPort: 22
+      VpcId: !Ref vpc
+
+
+  BastionServer:
+    Type: AWS::EC2::INSTANCE
+    Properties:
+      ImageId: String  #not done yet
+      InstanceType: "t2.micro" 
+      SecurityGroupIds: 
+        - !Ref SecurityGroupPublic
+      SubnetId: !Ref PublicSubnet
+      Tags: 
+        - 
+          Key: "BServerName"
+          Value: "BastionServer"
+    
+  Webserver:
+    Type: AWS::EC2::INSTANCE
+    Properties:
+      ImageId: String  #not done yet
+      InstanceType: "t2.micro" 
+      SecurityGroupIds: 
+        - !Ref SecurityGroupPublic
+      SubnetId: !Ref PublicSubnet
+      Tags: 
+        - 
+          Key: "WServerName"
+          Value: "Webserver"
+
+  Appserver:
+    Type: AWS::EC2::INSTANCE
+    Properties:
+      ImageId: String  #not done yet
+      InstanceType: "t2.micro" 
+      SecurityGroupIds: 
+        - !Ref SecurityGroupPrivate
+      SubnetId: !Ref PrivateSubnet1
+      Tags: 
+        - 
+          Key: "AppServerName"
+          Value: "Appserver"  
+
+  AmazonRDS:
+    Type: AWS::
+
+Outputs:
+ 
+
+
+
+
+
