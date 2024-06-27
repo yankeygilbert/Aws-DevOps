@@ -121,7 +121,7 @@ Resources:
   AmazonRDS:
     Type: AWS::
 
-Outputs:
+
  
 
 
