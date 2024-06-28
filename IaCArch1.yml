@@ -118,8 +118,7 @@ Resources:
           Key: "AppServerName"
           Value: "Appserver"  
 
-  AmazonRDS:
-    Type: AWS::
+ 
 
 
  
