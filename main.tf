@@ -17,7 +17,14 @@ module "vpc"{
 
 }
 
-module "ec2_instance" {
-  source = "./Modules/servers"
+  resource "aws_instance" "web_instances" {
+    count = length(var.servers)
+    ami = "ami-0bb84b8ffd87024d8"
+    instance_type = "t2.micro"
+    subnet_id = count.index < length(var.servers)-1 ? module.netw
+    tags = {
+      Name = "Instance-${count.index}"
+    }
 }
+
 
