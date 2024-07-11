@@ -12,7 +12,7 @@ resource "aws_internet_gateway" "IG" {
   }
 }
 
-resource "aws_subnets" "Privatesubnets" {
+resource "aws_subnet" "Privatesubnets" {
    count = length(var.Privatecidrblock)
    vpc_id = aws_vpc.IaCvpc.id
    cidr_block = var.Privatecidrblock[count.index]
@@ -41,8 +41,4 @@ resource "aws_route_table" "Rt" {
 
 output "subnetid" {
   value = aws_subnet.Publicsubnet.id
-}
-
-output "subnet-id" {
-  value = aws_subnet.Privatesubnets.id
 }

@@ -21,7 +21,7 @@ resource "aws_instance" "web_instances" {
     count = length(var.servers)
     ami = "ami-0bb84b8ffd87024d8"
     instance_type = "t2.micro"
-    subnet_id = count.index < length(var.servers)-1 ? module.vpc.subnetid : module.vpc.subnet-id[0]
+    subnet_id = (count.index < length(var.servers)-1 ? module.vpc.subnetid : module.vpc.aws_subnet.Privatesubnet[0])
     
     tags = {
       Name = "Instance-${count.index}"
