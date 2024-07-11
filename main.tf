@@ -4,7 +4,7 @@ terraform{
                 source = "hashicorp/aws"
                 version = "~>4.49.0"
       }
-      required_version = ">=1.1.0"
+      
     }
 }
 
@@ -14,9 +14,10 @@ provider "aws" {
 
 module "vpc"{
   source = "./Modules/networking"
+
 }
 
-module "Instances" {
+module "ec2_instance" {
   source = "./Modules/servers"
 }
 
