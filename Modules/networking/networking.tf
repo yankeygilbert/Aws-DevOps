@@ -6,7 +6,10 @@ resource "aws_vpc" "IaCvpc" {
 }
 
 resource "aws_internet_gateway" "IG" {
-  
+  vpc_id = aws_vpc.IaCvpc.id
+  tags = {
+    Name = "IG-IacVpc"
+  }
 }
 
 resource "aws_subnets" "Privatesubnets" {
@@ -34,4 +37,12 @@ resource "aws_route_table" "Rt" {
   depends_on = [ 
           
    ]
+}
+
+output "subnetid" {
+  value = aws_subnet.Publicsubnet.id
+}
+
+output "subnet-id" {
+  value = aws_subnet.Privatesubnets.id
 }
